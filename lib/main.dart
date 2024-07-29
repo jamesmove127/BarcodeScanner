@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import 'package:flutter_beep/flutter_beep.dart'; // 导入 flutter_beep
 
 void main() {
   runApp(MyApp());
@@ -71,11 +72,13 @@ class _ScannerScreenState extends State<ScannerScreen> {
     controller.scannedDataStream.listen((scanData) {
       if (!scanning) return;
       if (scannedData.contains(scanData.code)) {
+        FlutterBeep.beep(); // 播放蜂鸣声
         _showDialog('扫描成功', '内容匹配！\n扫描结果：${scanData.code}');
         // 暂停扫描
         controller.pauseCamera();
       } else {
         setState(() {
+          FlutterBeep.beep(); // 播放蜂鸣声
           feedbackMessage = '扫描失败，内容不匹配，扫描结果：${scanData.code}';
         });
       }
